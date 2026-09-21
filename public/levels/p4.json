@@ -1,0 +1,24 @@
+{
+  "id": "P4",
+  "surface": {
+    "solid": "stairs",
+    "subdivide": 1
+  },
+  "par": 9,
+  "spawn": {
+    "tile": 12,
+    "side": 0
+  },
+  "tiles": [
+    {
+      "tile": 11,
+      "type": "key",
+      "needle": 3
+    },
+    {
+      "tile": 45,
+      "type": "slot",
+      "needle": 3
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "D1",
+  "surface": {
+    "solid": "dodecahedron",
+    "subdivide": 1
+  },
+  "par": 4,
+  "spawn": {
+    "tile": 0,
+    "side": 0
+  },
+  "tiles": [
+    {
+      "tile": 22,
+      "type": "key",
+      "needle": 0
+    },
+    {
+      "tile": 53,
+      "type": "slot",
+      "needle": 1
+    }
+  ]
+}

@@ -1,0 +1,216 @@
+:root {
+  --bg: #0e1117;
+  --ink: #f4f1e8;
+  --dim: #6d7686;
+  --faint: #3a4150;
+  --needle: #63e0ad;
+  --warn: #e8615a;
+  --amber: #f0c05a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  overflow: hidden;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+#view {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ---- player-facing -------------------------------------------------- */
+
+.ui {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ui-progress {
+  position: absolute;
+  top: 22px;
+  left: 26px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ui-level {
+  font-size: 15px;
+  letter-spacing: 0.24em;
+  color: var(--ink);
+}
+
+.ui-dots { display: flex; gap: 6px; }
+
+.ui-dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--faint);
+  transition: background 200ms ease, transform 200ms ease;
+}
+
+.ui-dots i[data-on='done'] { background: var(--dim); }
+.ui-dots i[data-on='now'] { background: var(--needle); transform: scale(1.5); }
+
+.ui-score {
+  position: absolute;
+  top: 18px;
+  right: 26px;
+  text-align: right;
+}
+
+.ui-steps { line-height: 1; }
+
+.ui-steps b {
+  font-size: 44px;
+  font-weight: 300;
+  color: var(--ink);
+  transition: color 200ms ease;
+}
+
+.ui-steps u {
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--faint);
+}
+
+.ui-best {
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--faint);
+}
+
+.ui[data-state='par'] .ui-steps b { color: var(--needle); }
+.ui[data-state='over'] .ui-steps b { color: var(--amber); }
+.ui[data-state='stuck'] .ui-steps b { color: var(--warn); }
+
+/* A refusal is a pulse and nothing else: never a word about what was wrong. */
+.ui[data-flash='rejected'] .ui-steps b { animation: refuse 420ms ease; }
+.ui[data-flash='blocked'] .ui-steps b { animation: refuse 260ms ease; }
+.ui[data-flash='picked-up'] .ui-steps b { color: var(--needle); }
+
+@keyframes refuse {
+  0%, 100% { transform: translateX(0); color: var(--ink); }
+  20% { transform: translateX(-5px); color: var(--warn); }
+  55% { transform: translateX(4px); color: var(--warn); }
+  80% { transform: translateX(-2px); }
+}
+
+/* ---- controls -------------------------------------------------------- */
+
+.ui-keys {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 18px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  opacity: 0.85;
+  transition: opacity 900ms ease;
+}
+
+/* Once you clearly have the hang of it, this gets out of the way. */
+.ui-keys[data-faded='yes'] { opacity: 0.22; }
+
+.ui-keys span { display: flex; align-items: center; gap: 5px; }
+
+.ui-keys kbd {
+  display: inline-block;
+  min-width: 17px;
+  padding: 2px 4px;
+  font: inherit;
+  text-align: center;
+  color: var(--ink);
+  background: rgba(244, 241, 232, 0.06);
+  border: 1px solid rgba(244, 241, 232, 0.12);
+  border-radius: 3px;
+}
+
+/* ---- the result ------------------------------------------------------ */
+
+.ui-result {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -38%);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.ui-result[data-show='yes'] {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.ui-result b {
+  display: block;
+  font-size: 52px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--needle);
+}
+
+.ui-result i {
+  display: block;
+  margin-top: 6px;
+  font-style: normal;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.ui-result i[data-kind='best'] { color: var(--needle); }
+.ui-result i[data-kind='over'] { color: var(--amber); }
+
+/* ---- debug panel: authoring only, off unless asked for --------------- */
+
+.hud {
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+  background: rgba(14, 17, 23, 0.72);
+  border: 1px solid rgba(244, 241, 232, 0.08);
+  border-radius: 4px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hud-row { display: flex; gap: 6px; }
+.hud-row span { min-width: 58px; }
+.hud-row b { min-width: 44px; font-weight: 500; color: var(--ink); }
+
+.hud-needle b { color: var(--needle); }
+.hud-key b { color: var(--amber); }
+.hud-key b[data-live='yes'] { color: var(--warn); }
+
+.hud-hint {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(244, 241, 232, 0.08);
+  font-size: 11px;
+  color: var(--faint);
+}

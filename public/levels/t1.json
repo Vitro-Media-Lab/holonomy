@@ -1,0 +1,24 @@
+{
+  "id": "T1",
+  "surface": {
+    "solid": "tetrahedron",
+    "subdivide": 2
+  },
+  "par": 5,
+  "spawn": {
+    "tile": 0,
+    "side": 0
+  },
+  "tiles": [
+    {
+      "tile": 32,
+      "type": "key",
+      "needle": 1
+    },
+    {
+      "tile": 38,
+      "type": "slot",
+      "needle": 1
+    }
+  ]
+}

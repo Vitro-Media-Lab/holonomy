@@ -1,0 +1,24 @@
+{
+  "id": "O2",
+  "surface": {
+    "solid": "octahedron",
+    "subdivide": 2
+  },
+  "par": 12,
+  "spawn": {
+    "tile": 60,
+    "side": 0
+  },
+  "tiles": [
+    {
+      "tile": 92,
+      "type": "key",
+      "needle": 3
+    },
+    {
+      "tile": 58,
+      "type": "slot",
+      "needle": 0
+    }
+  ]
+}

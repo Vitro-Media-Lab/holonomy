@@ -1,0 +1,24 @@
+{
+  "id": "C5",
+  "surface": {
+    "solid": "cube",
+    "subdivide": 2
+  },
+  "par": 9,
+  "spawn": {
+    "tile": 64,
+    "side": 0
+  },
+  "tiles": [
+    {
+      "tile": 12,
+      "type": "key",
+      "needle": 1
+    },
+    {
+      "tile": 54,
+      "type": "slot",
+      "needle": 3
+    }
+  ]
+}

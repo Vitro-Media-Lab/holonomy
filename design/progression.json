@@ -1,0 +1,469 @@
+{
+  "block": "worlds",
+  "levels": [
+    {
+      "id": "C1",
+      "world": "C",
+      "rung": 1,
+      "solid": "cube",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        1,
+        2
+      ],
+      "gap": [
+        0,
+        4
+      ],
+      "difficulty": 7.4,
+      "element": null
+    },
+    {
+      "id": "C2",
+      "world": "C",
+      "rung": 2,
+      "solid": "cube",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        2,
+        4
+      ],
+      "gap": [
+        0,
+        2
+      ],
+      "difficulty": 9.2,
+      "element": null
+    },
+    {
+      "id": "C3",
+      "world": "C",
+      "rung": 3,
+      "solid": "cube",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        2,
+        4
+      ],
+      "gap": [
+        2,
+        6
+      ],
+      "difficulty": 15.2,
+      "element": null
+    },
+    {
+      "id": "C4",
+      "world": "C",
+      "rung": 4,
+      "solid": "cube",
+      "demand": 180,
+      "tax": [
+        1,
+        3
+      ],
+      "gap": [
+        6,
+        10
+      ],
+      "difficulty": 24.4,
+      "element": null
+    },
+    {
+      "id": "C5",
+      "world": "C",
+      "rung": 5,
+      "solid": "cube",
+      "demand": 180,
+      "tax": [
+        3,
+        5
+      ],
+      "gap": [
+        4,
+        8
+      ],
+      "difficulty": 24.6,
+      "element": null
+    },
+    {
+      "id": "T1",
+      "world": "T",
+      "rung": 1,
+      "solid": "tetrahedron",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        1,
+        2
+      ],
+      "gap": [
+        0,
+        4
+      ],
+      "difficulty": 7,
+      "element": null
+    },
+    {
+      "id": "T2",
+      "world": "T",
+      "rung": 2,
+      "solid": "tetrahedron",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        1,
+        2
+      ],
+      "gap": [
+        0,
+        4
+      ],
+      "difficulty": 7.4,
+      "element": null
+    },
+    {
+      "id": "T3",
+      "world": "T",
+      "rung": 3,
+      "solid": "tetrahedron",
+      "demand": 180,
+      "tax": [
+        1,
+        3
+      ],
+      "gap": [
+        2,
+        6
+      ],
+      "difficulty": 16.8,
+      "element": null
+    },
+    {
+      "id": "T4",
+      "world": "T",
+      "rung": 4,
+      "solid": "tetrahedron",
+      "demand": 180,
+      "tax": [
+        1,
+        3
+      ],
+      "gap": [
+        4,
+        8
+      ],
+      "difficulty": 20.2,
+      "element": null
+    },
+    {
+      "id": "T5",
+      "world": "T",
+      "rung": 5,
+      "solid": "tetrahedron",
+      "demand": 180,
+      "tax": [
+        3,
+        5
+      ],
+      "gap": [
+        2,
+        6
+      ],
+      "difficulty": 20.8,
+      "element": null
+    },
+    {
+      "id": "O1",
+      "world": "O",
+      "rung": 1,
+      "solid": "octahedron",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        1,
+        2
+      ],
+      "gap": [
+        0,
+        4
+      ],
+      "difficulty": 7,
+      "element": null
+    },
+    {
+      "id": "O2",
+      "world": "O",
+      "rung": 2,
+      "solid": "octahedron",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        2,
+        4
+      ],
+      "gap": [
+        0,
+        2
+      ],
+      "difficulty": 10.8,
+      "element": null
+    },
+    {
+      "id": "O3",
+      "world": "O",
+      "rung": 3,
+      "solid": "octahedron",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        4,
+        6
+      ],
+      "gap": [
+        0,
+        4
+      ],
+      "difficulty": 16.6,
+      "element": null
+    },
+    {
+      "id": "O4",
+      "world": "O",
+      "rung": 4,
+      "solid": "octahedron",
+      "demand": 180,
+      "tax": [
+        3,
+        5
+      ],
+      "gap": [
+        2,
+        6
+      ],
+      "difficulty": 22.4,
+      "element": null
+    },
+    {
+      "id": "O5",
+      "world": "O",
+      "rung": 5,
+      "solid": "octahedron",
+      "demand": 180,
+      "tax": [
+        9,
+        11
+      ],
+      "gap": [
+        0,
+        2
+      ],
+      "difficulty": 28.8,
+      "element": null
+    },
+    {
+      "id": "D1",
+      "world": "D",
+      "rung": 1,
+      "solid": "dodecahedron",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        1,
+        2
+      ],
+      "gap": [
+        0,
+        4
+      ],
+      "difficulty": 6.6,
+      "element": null
+    },
+    {
+      "id": "D2",
+      "world": "D",
+      "rung": 2,
+      "solid": "dodecahedron",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        1,
+        2
+      ],
+      "gap": [
+        0,
+        4
+      ],
+      "difficulty": 7,
+      "element": null
+    },
+    {
+      "id": "D3",
+      "world": "D",
+      "rung": 3,
+      "solid": "dodecahedron",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        1,
+        2
+      ],
+      "gap": [
+        0,
+        4
+      ],
+      "difficulty": 7.4,
+      "element": null
+    },
+    {
+      "id": "D4",
+      "world": "D",
+      "rung": 4,
+      "solid": "dodecahedron",
+      "demand": 180,
+      "tax": [
+        1,
+        3
+      ],
+      "gap": [
+        2,
+        6
+      ],
+      "difficulty": 16,
+      "element": null
+    },
+    {
+      "id": "D5",
+      "world": "D",
+      "rung": 5,
+      "solid": "dodecahedron",
+      "demand": 180,
+      "tax": [
+        1,
+        3
+      ],
+      "gap": [
+        2,
+        6
+      ],
+      "difficulty": 16.4,
+      "element": null
+    },
+    {
+      "id": "P1",
+      "world": "P",
+      "rung": 1,
+      "solid": "lblock",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        1,
+        2
+      ],
+      "gap": [
+        0,
+        4
+      ],
+      "difficulty": 7,
+      "element": null
+    },
+    {
+      "id": "P2",
+      "world": "P",
+      "rung": 2,
+      "solid": "lblock",
+      "demand": [
+        90,
+        -90
+      ],
+      "tax": [
+        2,
+        4
+      ],
+      "gap": [
+        0,
+        2
+      ],
+      "difficulty": 9.2,
+      "element": null
+    },
+    {
+      "id": "P3",
+      "world": "P",
+      "rung": 3,
+      "solid": "plus",
+      "demand": 180,
+      "tax": [
+        1,
+        3
+      ],
+      "gap": [
+        2,
+        6
+      ],
+      "difficulty": 16,
+      "element": null
+    },
+    {
+      "id": "P4",
+      "world": "P",
+      "rung": 4,
+      "solid": "stairs",
+      "demand": 180,
+      "tax": [
+        1,
+        3
+      ],
+      "gap": [
+        6,
+        10
+      ],
+      "difficulty": 23.6,
+      "element": null
+    },
+    {
+      "id": "P5",
+      "world": "P",
+      "rung": 5,
+      "solid": "stairs",
+      "demand": 180,
+      "tax": [
+        3,
+        5
+      ],
+      "gap": [
+        4,
+        8
+      ],
+      "difficulty": 24.2,
+      "element": null
+    }
+  ]
+}

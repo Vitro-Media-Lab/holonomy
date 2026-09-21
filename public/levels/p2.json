@@ -1,0 +1,24 @@
+{
+  "id": "P2",
+  "surface": {
+    "solid": "lblock",
+    "subdivide": 1
+  },
+  "par": 8,
+  "spawn": {
+    "tile": 16,
+    "side": 0
+  },
+  "tiles": [
+    {
+      "tile": 52,
+      "type": "key",
+      "needle": 0
+    },
+    {
+      "tile": 79,
+      "type": "slot",
+      "needle": 3
+    }
+  ]
+}

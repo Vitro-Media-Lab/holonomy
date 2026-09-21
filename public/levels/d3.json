@@ -1,0 +1,24 @@
+{
+  "id": "D3",
+  "surface": {
+    "solid": "dodecahedron",
+    "subdivide": 1
+  },
+  "par": 6,
+  "spawn": {
+    "tile": 10,
+    "side": 0
+  },
+  "tiles": [
+    {
+      "tile": 47,
+      "type": "key",
+      "needle": 2
+    },
+    {
+      "tile": 1,
+      "type": "slot",
+      "needle": 3
+    }
+  ]
+}
