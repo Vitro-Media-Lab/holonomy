@@ -49,7 +49,7 @@ are standing on the solid.
 ```bash
 npm install
 npm run dev      # play it
-npm test         # 181 tests
+npm test         # 189 tests
 npm run build
 ```
 
