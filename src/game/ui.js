@@ -13,7 +13,19 @@ const CONTROLS = [
   ['N P', 'level'], ['C', 'view'], ['M', 'sound'],
 ];
 
-export function createUI(levelCount, parent = document.body) {
+// The same actions, said the way a thumb understands them.
+const GESTURES = [
+  ['tap', 'step'], ['swipe', 'turn'], ['swipe down', 'undo'],
+];
+
+// Everything a touch player cannot reach any other way.
+const BUTTONS = [
+  ['undo', 'undo'], ['reset', 'restart'],
+  ['prev', '‹'], ['next', '›'],
+  ['camera', 'view'], ['mute', 'sound'],
+];
+
+export function createUI(levelCount, onAction, parent = document.body) {
   const root = document.createElement('div');
   root.className = 'ui';
   root.innerHTML = `
@@ -25,9 +37,20 @@ export function createUI(levelCount, parent = document.body) {
     <div class="ui-keys" id="u-keys">${CONTROLS
       .map(([k, what]) => `<span><kbd>${k.split(' ').join('</kbd><kbd>')}</kbd>${what}</span>`)
       .join('')}</div>
+    <div class="ui-touch" id="u-touch">${BUTTONS
+      .map(([action, label]) => `<button type="button" data-action="${action}">${label}</button>`)
+      .join('')}</div>
     <div class="ui-result" id="u-result"><b id="u-result-steps"></b><i id="u-result-note"></i></div>
   `;
   parent.appendChild(root);
+
+  for (const button of root.querySelectorAll('.ui-touch button')) {
+    // pointerup rather than click: no 300ms wait, and no ghost taps.
+    button.addEventListener('pointerup', (event) => {
+      event.preventDefault();
+      onAction?.(button.dataset.action);
+    });
+  }
 
   const el = {
     level: root.querySelector('#u-level'),
@@ -36,6 +59,7 @@ export function createUI(levelCount, parent = document.body) {
     par: root.querySelector('#u-par'),
     best: root.querySelector('#u-best'),
     keys: root.querySelector('#u-keys'),
+    touch: root.querySelector('#u-touch'),
     result: root.querySelector('#u-result'),
     resultSteps: root.querySelector('#u-result-steps'),
     resultNote: root.querySelector('#u-result-note'),
@@ -62,6 +86,22 @@ export function createUI(levelCount, parent = document.body) {
   let beatBest = false;
 
   return {
+    /**
+     * Switches the legend from keys to gestures and reveals the buttons for
+     * the things a thumb has no other way of reaching. Driven by an actual
+     * touch rather than by sniffing the device, so a laptop with a
+     * touchscreen gets whichever one the player reaches for first.
+     */
+    useTouch() {
+      if (root.dataset.touch === 'yes') return;
+      root.dataset.touch = 'yes';
+      el.keys.innerHTML = GESTURES
+        .map(([gesture, what]) => `<span><kbd>${gesture}</kbd>${what}</span>`)
+        .join('');
+      delete el.keys.dataset.faded;
+      moves = 0;
+    },
+
     /** Fades the key list once the player has clearly got the hang of it. */
     noteInput() {
       moves++;

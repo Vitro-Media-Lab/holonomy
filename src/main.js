@@ -5,6 +5,7 @@ import { createPlayerMesh, placePlayer, setPlayerFacing, setNeedle } from './ren
 import { createMarks } from './render/marks.js';
 import { createTrail } from './render/trail.js';
 import { createInput } from './game/input.js';
+import { createTouch } from './game/touch.js';
 import { createHud } from './game/hud.js';
 import { createUI } from './game/ui.js';
 import { createSound } from './render/sound.js';
@@ -30,7 +31,7 @@ const sound = createSound();
 // serves from a custom domain and from a project path on github.io.
 const base = import.meta.env.BASE_URL;
 const manifest = await (await fetch(`${base}levels/manifest.json`)).json();
-const ui = createUI(manifest.levels.length);
+const ui = createUI(manifest.levels.length, (action) => handle(action));
 
 let index = 0;
 let level, game, solid, marks, playerMesh, trail;
@@ -97,6 +98,8 @@ function poseFor(tileId) {
 }
 
 function handle(action) {
+  // A tap can land before the first level has finished fetching.
+  if (!game) return;
   ui.noteInput();
   if (action === 'hud') { hud.toggle(); return; }
   if (action === 'camera') { follow = !follow; return; }
@@ -125,6 +128,10 @@ function handle(action) {
   // Undoing a turn must not eat a tile off the trail; only undoing a step does.
   else if (events.includes('undone') && before !== game.walker.tile) trail.pop();
 }
+
+// Gestures feed the very same actions the keyboard does, so there is one
+// set of rules and one input path however the game is being played.
+createTouch(canvas, (action) => handle(action), () => ui.useTouch());
 
 await loadLevel(0);
 

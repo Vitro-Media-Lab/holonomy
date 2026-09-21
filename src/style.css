@@ -214,3 +214,74 @@ html, body {
   font-size: 11px;
   color: var(--faint);
 }
+
+/* ---- touch ----------------------------------------------------------- */
+
+html, body {
+  /* A swipe is a game move, never a scroll, a zoom or a pull-to-refresh. */
+  touch-action: none;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#view {
+  touch-action: none;
+  /* Mobile browsers count their own toolbars out of dvh; vh keeps the canvas
+     taller than the window and pushes the controls off the bottom. */
+  height: 100dvh;
+}
+
+.ui-touch {
+  position: absolute;
+  left: 50%;
+  bottom: calc(52px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: none;
+  gap: 8px;
+}
+
+/* Only appears once a finger has actually been used. */
+.ui[data-touch='yes'] .ui-touch { display: flex; }
+
+.ui-touch button {
+  pointer-events: auto;
+  min-width: 52px;
+  min-height: 40px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  background: rgba(244, 241, 232, 0.07);
+  border: 1px solid rgba(244, 241, 232, 0.14);
+  border-radius: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ui-touch button:active {
+  background: rgba(99, 224, 173, 0.18);
+  border-color: var(--needle);
+}
+
+/* ---- small screens --------------------------------------------------- */
+
+@media (max-width: 560px) {
+  .ui-progress { top: calc(14px + env(safe-area-inset-top)); left: 16px; }
+  .ui-score { top: calc(10px + env(safe-area-inset-top)); right: 16px; }
+  .ui-steps b { font-size: 34px; }
+  .ui-steps u { font-size: 17px; }
+  .ui-result b { font-size: 40px; }
+  .ui-keys {
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    gap: 3px 12px;
+    font-size: 10px;
+  }
+  .ui-dots i { width: 4px; height: 4px; }
+}
+
+/* A phone held sideways has almost no height to spare. */
+@media (max-height: 460px) {
+  .ui-steps b { font-size: 28px; }
+  .ui-touch { bottom: calc(40px + env(safe-area-inset-bottom)); }
+  .ui-touch button { min-height: 34px; }
+}

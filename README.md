@@ -37,6 +37,13 @@ scripted, which is why it never contradicts itself.
 | `M` | mute |
 | `` ` `` | debug panel (spoils the puzzle) |
 
+On a touchscreen: **tap** or **swipe up** to step, **swipe left/right** to
+turn, **swipe down** to undo. Everything else is a button.
+
+Gestures are body-relative on purpose. A swipe meaning "go that way on
+screen" would be a lie, because which way is screen-left depends on where you
+are standing on the solid.
+
 ## Running it
 
 ```bash
