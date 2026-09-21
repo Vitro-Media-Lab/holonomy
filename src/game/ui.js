@@ -20,7 +20,7 @@ const GESTURES = [
 
 // Everything a touch player cannot reach any other way.
 const BUTTONS = [
-  ['undo', 'undo'], ['reset', 'restart'],
+  ['undo', 'undo'], ['reset', 'reset'],
   ['prev', '‹'], ['next', '›'],
   ['camera', 'view'], ['mute', 'sound'],
 ];

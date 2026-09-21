@@ -4,6 +4,7 @@ import {
   LineSegments, LineBasicMaterial, BufferGeometry, Float32BufferAttribute,
 } from 'three';
 import { axisColor, PALETTE } from './palette.js';
+import { trackViewport } from './viewport.js';
 
 /**
  * Direction from the solid to the camera. Deliberately NOT (1, 1, 1).
@@ -44,8 +45,8 @@ export function createScene(canvas) {
   camera.updateMatrixWorld();
 
   function resize() {
-    const w = canvas.clientWidth || window.innerWidth;
-    const h = canvas.clientHeight || window.innerHeight;
+    const w = Math.max(1, canvas.clientWidth);
+    const h = Math.max(1, canvas.clientHeight);
     const aspect = w / h;
     camera.top = VIEW_HEIGHT / 2;
     camera.bottom = -VIEW_HEIGHT / 2;
@@ -54,8 +55,17 @@ export function createScene(canvas) {
     camera.updateProjectionMatrix();
     renderer.setSize(w, h, false);
   }
+
+  // Keep the window size in CSS variables, then drive the renderer off what
+  // the canvas actually measured. Reading the window in both places lets the
+  // two disagree; measuring the element cannot.
+  trackViewport();
+  if (typeof ResizeObserver === 'function') {
+    new ResizeObserver(resize).observe(canvas);
+  } else {
+    window.addEventListener('resize', resize);
+  }
   resize();
-  window.addEventListener('resize', resize);
 
   return { scene, camera, renderer, resize, toCamera: TO_CAMERA.clone() };
 }

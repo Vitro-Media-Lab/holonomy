@@ -21,8 +21,10 @@ html, body {
 
 #view {
   display: block;
-  width: 100vw;
-  height: 100vh;
+  /* Measured from visualViewport, because vw/vh and even dvh disagree with
+     what is on screen while a mobile toolbar is sliding. */
+  width: var(--app-width, 100vw);
+  height: var(--app-height, 100vh);
 }
 
 /* ---- player-facing -------------------------------------------------- */
@@ -224,11 +226,11 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-#view {
-  touch-action: none;
-  /* Mobile browsers count their own toolbars out of dvh; vh keeps the canvas
-     taller than the window and pushes the controls off the bottom. */
-  height: 100dvh;
+#view { touch-action: none; }
+
+.ui {
+  width: var(--app-width, 100vw);
+  height: var(--app-height, 100vh);
 }
 
 .ui-touch {
@@ -237,6 +239,11 @@ html, body {
   bottom: calc(52px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
   display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* Six buttons at full size come to 384px, wider than most phones. Wrapping
+     is what stops the row being clipped at both ends. */
+  max-width: calc(var(--app-width, 100vw) - 24px);
   gap: 8px;
 }
 
@@ -277,6 +284,14 @@ html, body {
     font-size: 10px;
   }
   .ui-dots i { width: 4px; height: 4px; }
+
+  .ui-touch { gap: 6px; }
+  .ui-touch button {
+    min-width: 42px;
+    min-height: 38px;
+    padding: 0 8px;
+    font-size: 11px;
+  }
 }
 
 /* A phone held sideways has almost no height to spare. */

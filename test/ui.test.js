@@ -127,3 +127,40 @@ describe('touch gestures are the tank controls, not screen directions', () => {
     expect([...actions].sort()).toEqual(['forward', 'left', 'right', 'undo']);
   });
 });
+
+describe('the mobile viewport', () => {
+  const css = read('src/style.css');
+  const scene = read('src/render/scene.js');
+  const viewport = read('src/render/viewport.js');
+
+  it('sizes the canvas from the measured window, not from vh units', () => {
+    // 100vh is the height with the URL bar HIDDEN, so it is too tall while
+    // the bar is showing and the bottom of the game sits under it.
+    expect(css).toMatch(/#view\s*\{[^}]*--app-width/);
+    expect(css).toMatch(/#view\s*\{[^}]*--app-height/);
+  });
+
+  it('measures the visual viewport, which is what is actually on screen', () => {
+    expect(viewport).toMatch(/visualViewport/);
+    // A toolbar sliding away scrolls the visual viewport without resizing it.
+    expect(viewport).toMatch(/addEventListener\('scroll'/);
+    expect(viewport).toMatch(/orientationchange/);
+  });
+
+  it('drives the renderer off the canvas, so CSS and WebGL cannot disagree', () => {
+    expect(scene).toMatch(/ResizeObserver/);
+    expect(scene).toMatch(/canvas\.clientWidth/);
+    expect(scene).not.toMatch(/canvas\.clientWidth \|\| window\.innerWidth/);
+  });
+
+  it('lets the button row wrap instead of running off the screen', () => {
+    // Six buttons at full size are wider than a 360px phone.
+    expect(css).toMatch(/\.ui-touch\s*\{[^}]*flex-wrap:\s*wrap/);
+    expect(css).toMatch(/\.ui-touch\s*\{[^}]*max-width/);
+  });
+
+  it('keeps the interface clear of notches and home indicators', () => {
+    expect(css).toMatch(/env\(safe-area-inset-bottom\)/);
+    expect(css).toMatch(/env\(safe-area-inset-top\)/);
+  });
+});
