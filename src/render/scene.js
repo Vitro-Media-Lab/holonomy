@@ -3,7 +3,7 @@ import {
   Mesh, MeshBasicMaterial, DoubleSide,
   LineSegments, LineBasicMaterial, BufferGeometry, Float32BufferAttribute,
 } from 'three';
-import { axisColor, PALETTE } from './palette.js';
+import { faceColours, PALETTE } from './palette.js';
 import { trackViewport } from './viewport.js';
 
 /**
@@ -19,7 +19,25 @@ import { trackViewport } from './viewport.js';
  * player it is the solid that turns.
  */
 export const TO_CAMERA = new Vector3(1.0, 1.22, 0.74).normalize();
-const VIEW_HEIGHT = 3.9;
+
+/**
+ * How much world the view must show. Every solid is normalised to a radius of
+ * sqrt(3), so it spans 3.46 across, and this leaves a little air around it.
+ */
+export const VIEW_SPAN = 3.9;
+
+/**
+ * The orthographic box for a given aspect ratio.
+ *
+ * Sizing by height alone is fine on a desktop and wrong on a phone: at an
+ * aspect of 0.45 a height-sized box is only 1.75 wide, half of what the solid
+ * needs, so it gets cut off at both edges. Dividing by the smaller of the two
+ * dimensions means the span is satisfied whichever way round the screen is.
+ */
+export function frustumFor(aspect) {
+  const span = VIEW_SPAN / Math.min(1, aspect);
+  return { width: span * aspect, height: span };
+}
 
 /**
  * Where the player's face is brought to: the top. NOT the camera axis.
@@ -47,11 +65,11 @@ export function createScene(canvas) {
   function resize() {
     const w = Math.max(1, canvas.clientWidth);
     const h = Math.max(1, canvas.clientHeight);
-    const aspect = w / h;
-    camera.top = VIEW_HEIGHT / 2;
-    camera.bottom = -VIEW_HEIGHT / 2;
-    camera.left = (-VIEW_HEIGHT * aspect) / 2;
-    camera.right = (VIEW_HEIGHT * aspect) / 2;
+    const { width, height } = frustumFor(w / h);
+    camera.top = height / 2;
+    camera.bottom = -height / 2;
+    camera.left = -width / 2;
+    camera.right = width / 2;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h, false);
   }
@@ -154,6 +172,7 @@ export function createSolid(surface) {
 
   group.add(tileMesh, gridMesh, edgeMesh);
 
+  const colours = faceColours(surface);
   const goal = new Color(PALETTE.needle);
   const edgeBase = new Color(PALETTE.player);
   const scratch = new Color();
@@ -173,7 +192,7 @@ export function createSolid(surface) {
       const near = isNearSide(rotated);
       const style = near ? STYLE.near : STYLE.far;
 
-      scratch.set(axisColor(tile.normal)).lerp(goal, solved);
+      scratch.set(colours.get(tile.face)).lerp(goal, solved);
       write(tiles, i * 6, 6, scratch, style.fill + (SOLVED_FILL - style.fill) * solved);
       write(grids, i * 8, 8, scratch, style.grid + (SOLVED_GRID - style.grid) * solved);
     });

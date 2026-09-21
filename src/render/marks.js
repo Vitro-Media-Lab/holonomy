@@ -3,7 +3,7 @@ import {
   Line, LineBasicMaterial, BufferGeometry, DoubleSide, RingGeometry,
   Float32BufferAttribute,
 } from 'three';
-import { axisColor, PALETTE } from './palette.js';
+import { faceColours, PALETTE } from './palette.js';
 import { isNearSide } from './scene.js';
 import { orientOnTile } from './place.js';
 
@@ -47,6 +47,7 @@ export function createMarks(level) {
   const group = new Group();
   const surface = level.surface;
   const scale = surface.meanTileRadius() * 1.3;
+  const colours = faceColours(surface);
 
   let slotFill = null;
   let slotOutline = null;
@@ -71,7 +72,7 @@ export function createMarks(level) {
 
     if (t.type === 'wall') {
       const wall = new Mesh(quadGeometry(tile, 0.004), new MeshBasicMaterial({
-        color: axisColor(tile.normal), transparent: true, opacity: 0.8,
+        color: colours.get(tile.face), transparent: true, opacity: 0.8,
         side: DoubleSide, depthWrite: false,
       }));
       wall.renderOrder = 300;

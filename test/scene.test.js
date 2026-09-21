@@ -1,9 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { Vector3 } from 'three';
-import { TO_CAMERA, isNearSide, createSolid, faceOrientation } from '../src/render/scene.js';
+import {
+  TO_CAMERA, isNearSide, createSolid, faceOrientation, frustumFor, VIEW_SPAN,
+} from '../src/render/scene.js';
 import { Walker } from '../src/core/walker.js';
 import { buildSurface } from '../src/core/surface.js';
 import { SOLIDS } from '../src/core/polyhedra.js';
+import { faceColours } from '../src/render/palette.js';
 
 /** Where a point lands on the view plane, under orthographic projection. */
 const project = (v) => v.clone().addScaledVector(TO_CAMERA, -v.dot(TO_CAMERA));
@@ -229,5 +232,88 @@ describe('nothing flat is ever culled away', () => {
     // Knocked back so you know it is round the back, never switched off.
     expect(key.material.opacity).toBeGreaterThan(0.3);
     expect(key.material.opacity).toBeLessThan(1);
+  });
+});
+
+describe('faces are told apart by colour on every solid', () => {
+  it('a cube still comes out as the axis pairing it always was', () => {
+    const surface = buildSurface('cube', 2);
+    const colours = faceColours(surface);
+    const counts = new Map();
+    for (const c of colours.values()) counts.set(c, (counts.get(c) ?? 0) + 1);
+    expect([...counts.values()].sort()).toEqual([2, 2, 2]);
+    expect(clashes(surface, colours)).toBe(0);
+  });
+
+  it('no solid comes out as one flat colour', () => {
+    // Tinting by dominant axis made a tetrahedron and an octahedron 100% red,
+    // because their normals are all (1,1,1)-ish and every component ties.
+    for (const name of Object.keys(SOLIDS)) {
+      const surface = buildSurface(name, 1);
+      const colours = faceColours(surface);
+      const counts = new Map();
+      for (const c of colours.values()) counts.set(c, (counts.get(c) ?? 0) + 1);
+      const worst = Math.max(...counts.values()) / colours.size;
+      expect(worst, `${name} is ${Math.round(worst * 100)}% one colour`).toBeLessThan(0.7);
+    }
+  });
+
+  it('most borders separate two different colours', () => {
+    // Three hues cannot always be perfect: a tetrahedron's faces all touch,
+    // so it needs four. The point is that the repeats are rare.
+    for (const name of Object.keys(SOLIDS)) {
+      const surface = buildSurface(name, 1);
+      const colours = faceColours(surface);
+      const { bad, total } = clashDetail(surface, colours);
+      expect(bad / total, `${name} repeats on ${bad}/${total} borders`).toBeLessThan(0.35);
+    }
+  });
+});
+
+function clashDetail(surface, colours) {
+  const seen = new Set();
+  let bad = 0;
+  let total = 0;
+  for (const tile of surface.tiles) {
+    for (const side of tile.neighbours) {
+      const other = surface.tile(side.tile).face;
+      if (other === tile.face) continue;
+      const key = `${Math.min(tile.face, other)}:${Math.max(tile.face, other)}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      total++;
+      if (colours.get(tile.face) === colours.get(other)) bad++;
+    }
+  }
+  return { bad, total };
+}
+
+const clashes = (surface, colours) => clashDetail(surface, colours).bad;
+
+describe('the solid fits on the screen, whatever shape the screen is', () => {
+  // A phone in portrait was the case this got wrong: sizing the view box by
+  // height alone left it half as wide as the solid, cut off at both edges.
+  const NEEDED = 2 * Math.sqrt(3);   // every solid is normalised to this span
+
+  const SCREENS = [
+    ['desktop', 1920, 1080], ['laptop', 1440, 900], ['tablet', 768, 1024],
+    ['iPhone portrait', 390, 844], ['android portrait', 360, 800],
+    ['very tall', 852, 2000], ['phone sideways', 844, 390],
+    ['square', 800, 800],
+  ];
+
+  for (const [label, w, h] of SCREENS) {
+    it(`${label} ${w}x${h} shows the whole solid`, () => {
+      const { width, height } = frustumFor(w / h);
+      expect(width, 'cropped left and right').toBeGreaterThanOrEqual(NEEDED);
+      expect(height, 'cropped top and bottom').toBeGreaterThanOrEqual(NEEDED);
+    });
+  }
+
+  it('never wastes the screen: one dimension is always a snug fit', () => {
+    for (const [, w, h] of SCREENS) {
+      const { width, height } = frustumFor(w / h);
+      expect(Math.min(width, height)).toBeCloseTo(VIEW_SPAN, 9);
+    }
   });
 });
